@@ -1,0 +1,54 @@
+[gd_scene load_steps=11 format=3 uid="uid://bssg7odcjd8lp"]
+
+[ext_resource type="PackedScene" uid="uid://bnuebrpwnw72r" path="res://player.tscn" id="1_fwvgf"]
+[ext_resource type="Shader" uid="uid://78toymnpo54i" path="res://level.tres" id="1_hjp36"]
+[ext_resource type="Shader" path="res://sky.gdshader" id="1_qbsv7"]
+[ext_resource type="Texture2D" uid="uid://chmq26tgo72xn" path="res://Textures/Sky/sunflowers_puresky_4k.exr" id="2_flgca"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6pekg"]
+shader = ExtResource("1_qbsv7")
+shader_parameter/skyColor = Color(0.803922, 0.670588, 0.470588, 1)
+shader_parameter/horizonColor = Color(0.0392157, 0.27451, 1, 1)
+shader_parameter/skyTexture = ExtResource("2_flgca")
+
+[sub_resource type="Sky" id="Sky_5j785"]
+sky_material = SubResource("ShaderMaterial_6pekg")
+
+[sub_resource type="Environment" id="Environment_nw21s"]
+background_mode = 2
+sky = SubResource("Sky_5j785")
+ambient_light_color = Color(0.2, 0.270588, 0.670588, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r3pt2"]
+render_priority = 0
+shader = ExtResource("1_hjp36")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_yfrxc"]
+material = SubResource("ShaderMaterial_r3pt2")
+size = Vector2(100, 100)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_vp7q5"]
+data = PackedVector3Array(25, 0, 25, -25, 0, 25, 25, 0, -25, -25, 0, 25, -25, 0, -25, 25, 0, -25)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.0430439, 0.999073, 0, -0.999073, -0.0430439, 0, 5.59038, 6.90564)
+light_color = Color(0.992157, 0.984314, 0.827451, 1)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_nw21s")
+
+[node name="SpawnFloor" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51302, -0.320873, -3.93722)
+mesh = SubResource("PlaneMesh_yfrxc")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="SpawnFloor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SpawnFloor/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_vp7q5")
+
+[node name="Player" parent="." instance=ExtResource("1_fwvgf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.93282, -1.85584)
+linear_velocity = Vector3(1, 0, 0)
+linear_damp = 3.0

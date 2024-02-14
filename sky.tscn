@@ -1,0 +1,25 @@
+[gd_scene load_steps=6 format=3 uid="uid://wbqddjny20qi"]
+
+[ext_resource type="Shader" path="res://sky.gdshader" id="1_qdxt3"]
+[ext_resource type="Texture2D" uid="uid://chmq26tgo72xn" path="res://Textures/Sky/sunflowers_puresky_4k.exr" id="2_y3rdn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6pekg"]
+shader = ExtResource("1_qdxt3")
+shader_parameter/skyColor = Color(0.803922, 0.670588, 0.470588, 1)
+shader_parameter/horizonColor = Color(0.0392157, 0.27451, 1, 1)
+shader_parameter/skyTexture = ExtResource("2_y3rdn")
+
+[sub_resource type="Sky" id="Sky_5j785"]
+sky_material = SubResource("ShaderMaterial_6pekg")
+
+[sub_resource type="Environment" id="Environment_nw21s"]
+background_mode = 2
+sky = SubResource("Sky_5j785")
+ambient_light_color = Color(0.2, 0.270588, 0.670588, 1)
+
+[node name="Sky" type="WorldEnvironment"]
+environment = SubResource("Environment_nw21s")
+
+[node name="Sun" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Sun"]
